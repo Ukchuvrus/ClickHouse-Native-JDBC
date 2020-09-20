@@ -45,8 +45,10 @@ public class ClickHouseConfig {
         this.password = (obj = settings.remove(SettingKey.password)) == null ? "" : String.valueOf(obj);
         this.username = (obj = settings.remove(SettingKey.user)) == null ? "default" : String.valueOf(obj);
         this.database = (obj = settings.remove(SettingKey.database)) == null ? "default" : String.valueOf(obj);
+
+        // Java use time unit mills @ https://docs.oracle.com/javase/7/docs/api/java/net/Socket.html#connect(java.net.SocketAddress,%20int)
         this.soTimeout = (obj = settings.remove(SettingKey.query_timeout)) == null ? 0 : (Integer) obj * 1000;
-        this.connectTimeout = (obj = settings.remove(SettingKey.connect_timeout)) == null ? 0 : (Integer) obj;
+        this.connectTimeout = (obj = settings.remove(SettingKey.connect_timeout)) == null ? 0 : (Integer) obj * 1000;
     }
 
     public int port() {
@@ -152,7 +154,7 @@ public class ClickHouseConfig {
         configure.password = this.password;
         configure.soTimeout = this.soTimeout;
         configure.connectTimeout = this.connectTimeout;
-        configure.settings = new HashMap<SettingKey, Object>(this.settings);
+        configure.settings = new HashMap<>(this.settings);
 
         return configure;
     }

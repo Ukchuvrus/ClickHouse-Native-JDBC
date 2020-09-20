@@ -9,10 +9,13 @@ jdk:
   - openjdk10
   - oraclejdk8
   - oraclejdk9
+
 before_install:
   - export TZ=Asia/Shanghai
+  - docker-compose up -d
+
 script:
-  - mvn clean verify -Dmaven.skip.integration=false
+  - mvn -B clean verify -Dmaven.skip.integration=false
   - echo "benchmark TODO"
 
 

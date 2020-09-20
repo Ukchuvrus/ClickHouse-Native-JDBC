@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -16,7 +17,7 @@ public class QueryComplexTypeITest extends AbstractITest {
 
     @Test
     public void successfullyDate() throws Exception {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ROOT);
 
         // use client timezone, Asia/Shanghai in traivs-ci
         withNewConnection(connection -> {
@@ -98,7 +99,7 @@ public class QueryComplexTypeITest extends AbstractITest {
                 statement.executeQuery("SELECT arrayJoin([NULL,toFixedString('abc',3)])");
 
             Assert.assertTrue(rs.next());
-            Assert.assertEquals(rs.getString(1), "\u0000\u0000\u0000");
+            Assert.assertEquals(rs.getString(1), null);
             Assert.assertTrue(rs.wasNull());
             Assert.assertTrue(rs.next());
             Assert.assertEquals(rs.getString(1), "abc");
